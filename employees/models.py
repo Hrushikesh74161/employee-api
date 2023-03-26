@@ -1,21 +1,16 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-    PermissionsMixin
-)
-from django.conf import settings
 
 
 class Employee(models.Model):
     """
     Employee Model
     """
+
     GENDERS = (
-        ('M', 'M'),
-        ('F', 'F'),
-        ('T', 'T'),
+        ("M", "M"),
+        ("F", "F"),
+        ("T", "T"),
     )
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField(validators=[MaxValueValidator(60)])
