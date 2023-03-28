@@ -40,14 +40,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
                 validator.validate(password)
             except:
                 if isinstance(validator, UserAttributeSimilarityValidator):
-                    raise ValidationError("Password similar to username.")
+                    raise APIException("Password similar to username.")
                 if isinstance(validator, MinimumLengthValidator):
-                    raise ValidationError(
+                    raise APIException(
                         "Password is short. Should be atleast 8 characters."
                     )
                 if isinstance(validator, CommonPasswordValidator):
-                    raise ValidationError("Password is too common.")
+                    raise APIException("Password is too common.")
                 if isinstance(validator, NumericPasswordValidator):
-                    raise ValidationError("Password is all numeric.")
+                    raise APIException("Password is all numeric.")
 
         return password
