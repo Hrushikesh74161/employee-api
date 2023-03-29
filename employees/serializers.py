@@ -2,7 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from employees.models import Employee
 from django.contrib.auth.password_validation import get_default_password_validators
-from rest_framework.exceptions import APIException
+from rest_framework.exceptions import ValidationError
 from django.contrib.auth.password_validation import (
     UserAttributeSimilarityValidator,
     MinimumLengthValidator,
@@ -40,14 +40,14 @@ class UserRegisterSerializer(serializers.ModelSerializer):
                 validator.validate(password)
             except:
                 if isinstance(validator, UserAttributeSimilarityValidator):
-                    raise APIException("Password similar to username.")
+                    raise ValidationError("Password similar to username.")
                 if isinstance(validator, MinimumLengthValidator):
-                    raise APIException(
+                    raise ValidationError(
                         "Password is short. Should be atleast 8 characters."
                     )
                 if isinstance(validator, CommonPasswordValidator):
-                    raise APIException("Password is too common.")
+                    raise ValidationError("Password is too common.")
                 if isinstance(validator, NumericPasswordValidator):
-                    raise APIException("Password is all numeric.")
+                    raise ValidationError("Password is all numeric.")
 
         return password
