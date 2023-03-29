@@ -27,7 +27,8 @@ class EmployeeTests(APITestCase):
 
     # test for get request for single employee, when authenticated
     def test_get_employee_authenticated(self):
-        response = self.client.get(path="/api/employee/1", **self.user_auth_header)
+        response = self.client.get(
+            path="/api/employee/1", **self.user_auth_header)
         content = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content["name"], "Employee")
@@ -39,7 +40,8 @@ class EmployeeTests(APITestCase):
 
     # test get request for employees
     def test_get_employees_authenticated(self):
-        response = self.client.get(path="/api/employee", **self.user_auth_header)
+        response = self.client.get(
+            path="/api/employee", **self.user_auth_header)
         paginated_response = self.client.get(
             path="/api/employee?count=10&page=1", **self.user_auth_header
         )
@@ -53,9 +55,11 @@ class EmployeeTests(APITestCase):
         # for paginated response
         paginated_content = json.loads(paginated_response.content)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(paginated_content["count"], Employee.objects.all().count())
+        self.assertEqual(
+            paginated_content["count"], Employee.objects.all().count())
         self.assertEqual(paginated_content["results"][0]["name"], "Employee")
-        self.assertNotEqual(paginated_content["results"][0]["name"], "NotEmployee")
+        self.assertNotEqual(
+            paginated_content["results"][0]["name"], "NotEmployee")
 
     # test employee creation from authenticated user
     def test_create_employee_authenticated(self):
@@ -73,7 +77,6 @@ class EmployeeTests(APITestCase):
             content_type="application/json",
             **self.user_auth_header
         )
-        content = json.loads(response.content)
         self.assertEqual(response.status_code, 201)
 
     # test employee creation from unauthenticated user
@@ -91,7 +94,6 @@ class EmployeeTests(APITestCase):
             data=data,
             content_type="application/json",
         )
-        content = json.loads(response.content)
         self.assertEqual(response.status_code, 403)
 
     # test for creating employee with wrong age
@@ -108,7 +110,6 @@ class EmployeeTests(APITestCase):
             url, data, content_type="application/json", **self.user_auth_header
         )
         # content = json.loads(response.content)
-        print(response.content)
         self.assertEqual(response.status_code, 400)
 
 
@@ -139,5 +140,6 @@ class UserTestCase(APITestCase):
             "email": "testuser@email.com",
             "password": "1234",
         }
-        response = self.client.post(self.url, data, content_type="application/json")
+        response = self.client.post(
+            self.url, data, content_type="application/json")
         self.assertEqual(response.status_code, 400)

@@ -18,7 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
 
     def validate_age(self, age):
         if age > 60:
-            raise APIException("Age should be less than or equal to 60.")
+            raise ValidationError("Age should be less than or equal to 60.")
         return age
 
 

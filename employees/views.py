@@ -1,14 +1,10 @@
-import json
-from django.http import HttpRequest
 from rest_framework import viewsets
 from rest_framework import generics
 from django.contrib.auth import login, authenticate, logout, models
 from rest_framework import response, status
 from rest_framework.permissions import (
-    IsAdminUser,
     AllowAny
 )
-from rest_framework.decorators import permission_classes
 from employees.models import Employee
 from employees.serializers import (
     EmployeeSerializer,
@@ -20,6 +16,7 @@ from employees.serializers import (
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
+
 
 class UserLoginView(generics.GenericAPIView):
     serializer_class = UserSerializer
@@ -53,8 +50,8 @@ class UserLogoutView(generics.GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        return response.Response( {'msg': 'Successfully logged out'}, status=status.HTTP_200_OK
-        )
+        return response.Response({'msg': 'Successfully logged out'}, status=status.HTTP_200_OK
+                                 )
 
 
 class UserRegisterView(generics.CreateAPIView):
@@ -71,4 +68,4 @@ class UserRegisterView(generics.CreateAPIView):
             'msg': 'Registered Successfully',
             'username': serializer.validated_data['username'],
         }
-        return response.Response(data, status=status.HTTP_201_CREATED)
+        return response.Response(data, headers=headers, status=status.HTTP_201_CREATED)
